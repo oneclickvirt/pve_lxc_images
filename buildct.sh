@@ -67,7 +67,9 @@ done < <(curl -s "$url" | grep -oP '(?<=href=")[^"]+')
 length=${#images[@]}
 for image in "${images[@]}"; do
   echo "$image"
-  curl -o "/var/lib/vz/template/cache/${image}" "http://download.proxmox.com/images/system/${image}"
+  if [ ! -f "/var/lib/vz/template/cache/${image}" ];then
+      curl -o "/var/lib/vz/template/cache/${image}" "http://download.proxmox.com/images/system/${image}"
+  fi
 done
 
 check_cdn() {
@@ -184,5 +186,4 @@ for ((i=0; i<${#images[@]}; i++)); do
     mv /root/temp/${backup_file_name} /root/fixed/${image}
     rm -rf /root/temp/vzdump*
     pct destroy $CTID
-    exit 1
 done
