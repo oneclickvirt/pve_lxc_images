@@ -52,7 +52,7 @@ fi
 cd /root >/dev/null 2>&1
 CTID="${1:-102}"
 core="${2:-1}"
-memory="${3:-512}"
+memory="${3:-1024}"
 disk="${4:-5}"
 storage="${5:-local}"
 url="http://download.proxmox.com/images/system/"
