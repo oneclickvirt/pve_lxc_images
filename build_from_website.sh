@@ -62,6 +62,7 @@ failed_images=(
     "almalinux-9-default_20221108_amd64"
     "centos-6-default_20161207_amd64"
     "centos-6-default_20191016_amd64"
+    "centos-7-default_20170504_amd64"
     "centos-8-default_20191016_amd64"
     "centos-8-default_20201210_amd64"
     "debian-10-standard_10.5-1_amd64"
