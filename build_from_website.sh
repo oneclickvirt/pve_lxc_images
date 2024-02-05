@@ -82,6 +82,7 @@ failed_images=(
     "ubuntu-18.10-standard_18.10-2_amd64"
     "ubuntu-19.04-standard_19.04-1_amd64"
     "ubuntu-19.10-standard_19.10-1_amd64"
+    "ubuntu-20.10-standard_20.10-1_amd64"
 )
 while IFS= read -r line; do
   failed_image=false
