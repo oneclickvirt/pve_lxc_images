@@ -20,6 +20,12 @@ else
     echo "Locale set to $utf8_locale"
 fi
 # CN=true
+if [ ! -f /root/fixed ]; then
+    mkdir -p /root/fixed
+fi
+if [ ! -f /root/temp ]; then
+    mkdir -p /root/temp
+fi
 
 get_system_arch() {
     local sysarch="$(uname -m)"
@@ -150,6 +156,15 @@ for ((i=0; i<${#images[@]}; i++)); do
     pct exec $CTID -- chmod 777 bash_ssh.sh
     pct exec $CTID -- dos2unix bash_ssh.sh
     pct exec $CTID -- bash bash_ssh.sh
+    # 清除缓存
+    if echo "$image" | grep -qiE "centos|almalinux|rockylinux"; then
+        pct exec $CTID -- yum clean all
+        pct exec $CTID -- yum autoremove
+    else
+        pct exec $CTID -- apt-get clean
+        pct exec $CTID -- apt-get autoclean
+        pct exec $CTID -- apt-get autoremove
+    fi
     # 禁止PVE自动修改网络接口设置
     pct exec $CTID -- touch /etc/network/.pve-ignore.interfaces
     # 禁止PVE自动修改DNS设置
@@ -159,9 +174,14 @@ for ((i=0; i<${#images[@]}; i++)); do
     pct exec $CTID -- touch /etc/.pve-ignore.hostname
     # 删除缓存，删除备份前需要删除的内容
     # https://www.reddit.com/r/homelab/comments/5xvfbf/how_to_proxmox_modify_a_ct_container_template/
-    pct exec $CTID -- apt-get clean
-    pct exec $CTID -- apt-get autoclean
-    pct exec $CTID -- apt-get autoremove
     pct exec $CTID -- rm /etc/resolv.conf
     pct exec $CTID -- rm /etc/hostname
+    pct set $CTID --delete net0
+    pct stop $CTID
+    vzdump $CTID --dumpdir /root/temp --compress zstd
+    rm -rf /root/temp/*.log
+    backup_file_name=$(ls /root/temp | grep "vzdump")
+    mv /root/temp/${backup_file_name} /root/fixed/${image}
+    rm -rf /root/temp/vzdump*
+    pct destroy $CTID
 done
