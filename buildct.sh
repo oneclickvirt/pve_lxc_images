@@ -146,10 +146,10 @@ for ((i=0; i<${#images[@]}; i++)); do
             pct exec $CTID -- apt-get install dos2unix -y
         fi
     fi
-    pct exec $CTID -- curl -L ${cdn_success_url}https://raw.githubusercontent.com/spiritLHLS/pve/main/scripts/ssh.sh -o ssh.sh
-    pct exec $CTID -- chmod 777 ssh.sh
-    pct exec $CTID -- dos2unix ssh.sh
-    pct exec $CTID -- bash ssh.sh
+    pct exec $CTID -- curl -L ${cdn_success_url}https://raw.githubusercontent.com/oneclickvirt/pve_lxc_images/main/bash_ssh.sh -o bash_ssh.sh
+    pct exec $CTID -- chmod 777 bash_ssh.sh
+    pct exec $CTID -- dos2unix bash_ssh.sh
+    pct exec $CTID -- bash bash_ssh.sh
     # 禁止PVE自动修改网络接口设置
     pct exec $CTID -- touch /etc/network/.pve-ignore.interfaces
     # 禁止PVE自动修改DNS设置
@@ -158,6 +158,7 @@ for ((i=0; i<${#images[@]}; i++)); do
     pct exec $CTID -- touch /etc/.pve-ignore.hosts
     pct exec $CTID -- touch /etc/.pve-ignore.hostname
     # 删除缓存，删除备份前需要删除的内容
+    # https://www.reddit.com/r/homelab/comments/5xvfbf/how_to_proxmox_modify_a_ct_container_template/
     pct exec $CTID -- apt-get clean
     pct exec $CTID -- apt-get autoclean
     pct exec $CTID -- apt-get autoremove
