@@ -116,7 +116,7 @@ for ((i=0; i<${#images[@]}; i++)); do
     fi
     
     user_ip="172.16.1.${num}"
-    pct create $CTID ${storage}:vztmpl/$image -cores $core -cpuunits 1024 -memory $memory -swap 128 -rootfs ${storage}:${disk} -onboot 1 -features nesting=1
+    pct create $CTID ${storage}:/var/lib/vz/template/cache/$image -cores $core -cpuunits 1024 -memory $memory -swap 128 -rootfs ${storage}:${disk} -onboot 1 -features nesting=1
     pct start $CTID
     pct set $CTID --hostname $CTID
     pct set $CTID --net0 name=eth0,ip=${user_ip}/24,bridge=vmbr1,gw=172.16.1.1
@@ -184,4 +184,5 @@ for ((i=0; i<${#images[@]}; i++)); do
     mv /root/temp/${backup_file_name} /root/fixed/${image}
     rm -rf /root/temp/vzdump*
     pct destroy $CTID
+    exit 1
 done
