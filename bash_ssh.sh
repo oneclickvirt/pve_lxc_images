@@ -88,7 +88,7 @@ checkupdate
 install_required_modules
 if [ -f "/etc/motd" ]; then
     echo '' >/etc/motd
-    echo 'Related repo https://github.com/spiritLHLS/pve' >>/etc/motd
+    echo 'Related repo https://github.com/oneclickvirt/pve_lxc_images' >>/etc/motd
     echo '--by https://t.me/spiritlhl' >>/etc/motd
 fi
 service iptables stop 2>/dev/null
