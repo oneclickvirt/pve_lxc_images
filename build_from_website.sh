@@ -136,7 +136,6 @@ for ((i=0; i<${#images[@]}; i++)); do
             pct exec $CTID -- curl -lk https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh -o ChangeMirrors.sh
             pct exec $CTID -- chmod 777 ChangeMirrors.sh
             pct exec $CTID -- ./ChangeMirrors.sh --use-official-source --web-protocol http --intranet false --close-firewall true --backup true --updata-software false --clean-cache false --install-epel true --ignore-backup-tips
-        
             pct exec $CTID -- rm -rf ChangeMirrors.sh
             pct exec $CTID -- yum install -y dos2unix curl
         else
@@ -153,6 +152,9 @@ for ((i=0; i<${#images[@]}; i++)); do
             pct exec $CTID -- dpkg --configure -a
             pct exec $CTID -- apt-get update
             pct exec $CTID -- apt-get install dos2unix curl -y
+            pct exec $CTID -- curl -lk https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh -o ChangeMirrors.sh
+            pct exec $CTID -- chmod 777 ChangeMirrors.sh
+            pct exec $CTID -- ./ChangeMirrors.sh --use-official-source --web-protocol http --intranet false --close-firewall true --backup true --updata-software false --clean-cache false --ignore-backup-tips
         else
             pct exec $CTID -- apt-get install curl -y --fix-missing
             pct exec $CTID -- curl -lk https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh -o ChangeMirrors.sh
