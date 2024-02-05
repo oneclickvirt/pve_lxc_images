@@ -125,7 +125,15 @@ for ((i=0; i<${#images[@]}; i++)); do
         pct exec $CTID -- yum install -y curl
         if [[ -z "${CN}" || "${CN}" != true ]]; then
             pct exec $CTID -- yum update -y 
-            pct exec $CTID -- yum update
+            pct exec $CTID -- yum update 
+            pct exec $CTID -- yum install -y dos2unix curl
+            pct exec $CTID -- yum install -y curl
+            pct exec $CTID -- yum clean packages
+            pct exec $CTID -- curl -lk https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh -o ChangeMirrors.sh
+            pct exec $CTID -- chmod 777 ChangeMirrors.sh
+            pct exec $CTID -- ./ChangeMirrors.sh --use-official-source --web-protocol http --intranet false --close-firewall true --backup true --updata-software false --clean-cache false --ignore-backup-tips --install-epel
+            pct exec $CTID -- ./ChangeMirrors.sh --use-official-source --web-protocol http --intranet false --close-firewall true --backup true --updata-software false --clean-cache false --ignore-backup-tips
+            pct exec $CTID -- rm -rf ChangeMirrors.sh
             pct exec $CTID -- yum install -y dos2unix curl
         else
             pct exec $CTID -- yum install -y curl
