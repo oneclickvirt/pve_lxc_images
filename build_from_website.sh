@@ -76,6 +76,12 @@ failed_images=(
     "debian-9.0-standard_9.0-2_amd64"
     "debian-9.0-standard_9.3-1_amd64"
     "debian-9.0-standard_9.5-1_amd64"
+    "devuan-3.0-standard_3.0_amd64"
+    "ubuntu-12.04-standard_12.04-1_amd64"
+    "ubuntu-18.10-standard_18.10-1_amd64"
+    "ubuntu-18.10-standard_18.10-2_amd64"
+    "ubuntu-19.04-standard_19.04-1_amd64"
+    "ubuntu-19.10-standard_19.10-1_amd64"
 )
 while IFS= read -r line; do
   failed_image=false
