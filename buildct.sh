@@ -97,7 +97,7 @@ cdn_urls=("https://cdn0.spiritlhl.top/" "http://cdn3.spiritlhl.net/" "http://cdn
 check_cdn_file
 CTIDs=()
 for ((i=0; i<${#images[@]}; i++)); do
-    CTID=$((start_value + i))
+    CTID=$((101 + i))
     CTIDs+=($CTID)
 done
 for ((i=0; i<${#images[@]}; i++)); do
