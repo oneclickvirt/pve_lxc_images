@@ -69,6 +69,7 @@ failed_images=(
     "debian-10-standard_10.7-1_amd64"
     "debian-10.0-standard_10.0-1_amd64"
     "debian-6.0-standard_6.0-7_amd64"
+    "debian-7.0-standard_7.11-1_amd64"
 )
 while IFS= read -r line; do
   failed_image=false
