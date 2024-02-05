@@ -56,7 +56,12 @@ memory="${3:-512}"
 disk="${4:-5}"
 storage="${5:-local}"
 url="http://download.proxmox.com/images/system/"
-images=$(pveam available --section system | awk '{print $2}')
+images=()
+while IFS= read -r line; do
+  if [[ ! $line =~ \.aplinfo && $line != '../' && ! $line =~ opensuse && ! $line =~ gentoo && ! $line =~ alpine && ! $line =~ archlinux && ! $line =~ fedora ]]; then
+    images+=("$line")
+  fi
+done < <(pveam available --section system | awk '{print $2}')
 length=${#images[@]}
 for image in "${images[@]}"; do
   echo "$image"
