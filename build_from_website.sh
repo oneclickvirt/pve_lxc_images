@@ -57,7 +57,26 @@ disk="${4:-5}"
 storage="${5:-local}"
 url="http://download.proxmox.com/images/system/"
 images=()
+failed_images=(
+    "almalinux-8-default_20210928_amd64"
+    "almalinux-9-default_20221108_amd64"
+    "centos-6-default_20161207_amd64"
+    "centos-6-default_20191016_amd64"
+    "centos-8-default_20191016_amd64"
+    "centos-8-default_20201210_amd64"
+    "debian-10-standard_10.5-1_amd64"
+)
 while IFS= read -r line; do
+  failed_image=false
+  for fa in "${failed_images[@]}"; do
+    if [[ $line == *"$fa"* ]]; then
+        failed_image=true
+        break
+    fi
+  done
+  if [ $failed_image == true ]; then
+    continue
+  fi
   if [[ ! $line =~ \.aplinfo && $line != '../' && ! $line =~ opensuse && ! $line =~ gentoo && ! $line =~ alpine && ! $line =~ archlinux && ! $line =~ fedora ]]; then
     images+=("$line")
   fi
