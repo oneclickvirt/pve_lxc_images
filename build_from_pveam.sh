@@ -195,4 +195,6 @@ for ((i=0; i<${#images[@]}; i++)); do
     mv /root/temp/${backup_file_name} /root/fixed/${real_name}_amd64.tar.zst
     rm -rf /root/temp/vzdump*
     pct destroy $CTID
+    echo "$image"
+    echo "-----------------------------------------------------------------------------------------------------------------------"
 done
