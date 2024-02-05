@@ -2,8 +2,6 @@
 # from
 # https://github.com/oneclickvirt/pve_lxc_images
 
-# ./buildct.sh
-
 # 用颜色输出信息
 _red() { echo -e "\033[31m\033[01m$@\033[0m"; }
 _green() { echo -e "\033[32m\033[01m$@\033[0m"; }
@@ -103,7 +101,6 @@ done
 for ((i=0; i<${#images[@]}; i++)); do
     CTID=${CTIDs[i]}
     image=${images[i]}
-    
     first_digit=${CTID:0:1}
     second_digit=${CTID:1:1}
     third_digit=${CTID:2:1}
@@ -116,7 +113,6 @@ for ((i=0; i<${#images[@]}; i++)); do
     else
         num=$((first_digit - 2))$second_digit$third_digit
     fi
-    
     user_ip="172.16.1.${num}"
     pct create $CTID /var/lib/vz/template/cache/$image -cores $core -cpuunits 1024 -memory $memory -swap 128 -rootfs ${storage}:${disk} -onboot 1 -features nesting=1
     pct start $CTID
