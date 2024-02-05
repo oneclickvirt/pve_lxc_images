@@ -179,8 +179,8 @@ for ((i=0; i<${#images[@]}; i++)); do
     vzdump $CTID --dumpdir /root/temp --compress zstd
     rm -rf /root/temp/*.log
     backup_file_name=$(ls /root/temp | grep "vzdump")
-    real_name=$(echo "${image}" | cut -d'.' -f1)
-    mv /root/temp/${backup_file_name} /root/fixed/${real_name}.tar.zst
+    real_name=$(echo "${image}" | cut -d'_amd64.' -f1)
+    mv /root/temp/${backup_file_name} /root/fixed/${real_name}_amd64.tar.zst
     rm -rf /root/temp/vzdump*
     pct destroy $CTID
 done
