@@ -189,8 +189,8 @@ for ((i=0; i<${#images[@]}; i++)); do
     pct exec $CTID -- bash bash_ssh.sh
     # 清除缓存
     if echo "$image" | grep -qiE "centos|almalinux|rockylinux"; then
-        pct exec $CTID -- yum clean all
-        pct exec $CTID -- yum autoremove
+        pct exec $CTID -- yum clean all -y
+        pct exec $CTID -- yum autoremove -y
     else
         pct exec $CTID -- apt-get clean
         pct exec $CTID -- apt-get autoclean
