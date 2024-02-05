@@ -3,7 +3,7 @@
 # https://github.com/oneclickvirt/pve_lxc_images
 
 # ./buildct.sh CTID CPU核数 内存 硬盘 系统 存储盘
-# ./buildct.sh 102 1 512 5 debian11 local
+# ./buildct.sh 102 1 512 1 debian11 local
 
 # 用颜色输出信息
 _red() { echo -e "\033[31m\033[01m$@\033[0m"; }
