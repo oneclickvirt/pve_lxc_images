@@ -164,7 +164,7 @@ for ((i=0; i<${#images[@]}; i++)); do
             pct exec $CTID -- apt-get install dos2unix -y
         fi
     fi
-    pct exec $CTID -- curl -L ${cdn_success_url}https://raw.githubusercontent.com/oneclickvirt/pve_lxc_images/main/bash_ssh.sh -o bash_ssh.sh
+    pct exec $CTID -- curl -lk ${cdn_success_url}https://raw.githubusercontent.com/oneclickvirt/pve_lxc_images/main/bash_ssh.sh -o bash_ssh.sh
     pct exec $CTID -- chmod 777 bash_ssh.sh
     pct exec $CTID -- dos2unix bash_ssh.sh
     pct exec $CTID -- bash bash_ssh.sh
