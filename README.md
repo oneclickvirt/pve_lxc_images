@@ -64,6 +64,7 @@ pct exec 101 -- rm /etc/resolv.conf
 pct exec 101 -- rm /etc/hostname
 pct set 101 --delete net0
 pct stop 101
+echo "$image"
 ```
 
 ```shell
