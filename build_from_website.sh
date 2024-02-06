@@ -201,6 +201,8 @@ for ((i=0; i<${#images[@]}; i++)); do
                 pct exec $CTID -- ./ChangeMirrors.sh --use-official-source --web-protocol http --intranet false --close-firewall true --backup true --updata-software false --clean-cache false --ignore-backup-tips
                 pct exec $CTID -- sed -i '/debian-security/ s/^/#/' /etc/apt/sources.list
                 pct exec $CTID -- apt-get update
+                pct exec $CTID -- apt-get install debian-keyring debian-archive-keyring -y
+                pct exec $CTID -- apt-get update
                 pct exec $CTID -- apt-get install dos2unix curl sudo -y
             fi
         else
