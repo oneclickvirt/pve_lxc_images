@@ -55,6 +55,7 @@ fixed_images=(
 while IFS= read -r line; do
   fixed_image=false
   for fa in "${fixed_images[@]}"; do
+    fa=$(echo "$fa" | sed 's/_amd64\..*//')
     if [[ $line == *"$fa"* ]]; then
         fixed_image=true
         break
