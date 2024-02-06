@@ -2,6 +2,7 @@
 # from
 # https://github.com/oneclickvirt/pve_lxc_images
 
+url="http://download.proxmox.com/images/system/"
 images=()
 fixed_images=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/oneclickvirt/pve_lxc_images/releases/tags/images" | grep -oP '"name": "\K[^"]+' | grep -v "images" |awk 'NR%2==1')
 while IFS= read -r line; do
@@ -15,7 +16,7 @@ while IFS= read -r line; do
   if [ $fixed_image == true ]; then
     continue
   fi
-  if [[ ! $line =~ \.aplinfo && $line != '../' && ! $line =~ opensuse && ! $line =~ gentoo && ! $line =~ alpine && ! $line =~ archlinux && ! $line =~ fedora ]]; then
+  if [[ ! $line =~ \.aplinfo && $line != '../' ]]; then
     images+=("$line")
   fi
 done < <(curl -s "$url" | grep -oP '(?<=href=")[^"]+')
