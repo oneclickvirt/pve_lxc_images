@@ -161,10 +161,8 @@ for ((i=0; i<${#images[@]}; i++)); do
     pct set $CTID --nameserver 1.1.1.1
     pct set $CTID --searchdomain local
     sleep 3
-    pct exec $CTID -- echo "" >> /etc/resolv.conf 
-    pct exec $CTID -- echo "nameserver 8.8.8.8" >> /etc/resolv.conf
-    pct exec $CTID -- echo "" >> /etc/resolv.conf 
-    pct exec $CTID -- echo "nameserver 8.8.4.4" >> /etc/resolv.conf
+    echo "nameserver 8.8.8.8" | pct exec $CTID -- tee -a /etc/resolv.conf
+    echo "nameserver 8.8.4.4" | pct exec $CTID -- tee -a /etc/resolv.conf
     if echo "$image" | grep -qiE "centos|almalinux|rockylinux"; then
         pct exec $CTID -- yum install -y curl
         if [[ -z "${CN}" || "${CN}" != true ]]; then
@@ -195,6 +193,16 @@ for ((i=0; i<${#images[@]}; i++)); do
             pct exec $CTID -- curl -lk https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh -o ChangeMirrors.sh
             pct exec $CTID -- chmod 777 ChangeMirrors.sh
             pct exec $CTID -- ./ChangeMirrors.sh --use-official-source --web-protocol http --intranet false --close-firewall true --backup true --updata-software false --clean-cache false --ignore-backup-tips
+            if [[ $image == *"debian-10"* ]]; then
+                sleep 3
+                pct exec $CTID -- rm -rf ChangeMirrors.sh
+                pct exec $CTID -- wget https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh
+                pct exec $CTID -- chmod 777 ChangeMirrors.sh
+                pct exec $CTID -- ./ChangeMirrors.sh --use-official-source --web-protocol http --intranet false --close-firewall true --backup true --updata-software false --clean-cache false --ignore-backup-tips
+                pct exec $CTID -- sed -i '/debian-security/ s/^/#/' /etc/apt/sources.list
+                pct exec $CTID -- apt-get update
+                pct exec $CTID -- apt-get install dos2unix curl sudo -y
+            fi
         else
             pct exec $CTID -- apt-get install curl -y --fix-missing
             pct exec $CTID -- curl -lk https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh -o ChangeMirrors.sh
