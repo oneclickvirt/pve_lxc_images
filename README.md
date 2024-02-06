@@ -21,10 +21,8 @@ pct set 101 --net0 name=eth0,ip=172.16.1.2/24,bridge=vmbr1,gw=172.16.1.1
 pct set 101 --nameserver 1.1.1.1
 pct set 101 --searchdomain local
 sleep 3
-pct exec 101 -- echo "" >> /etc/resolv.conf 
-pct exec 101 -- echo "nameserver 8.8.8.8" >> /etc/resolv.conf
-pct exec 101 -- echo "" >> /etc/resolv.conf 
-pct exec 101 -- echo "nameserver 8.8.4.4" >> /etc/resolv.conf
+echo "nameserver 8.8.8.8" | pct exec $CTID -- tee -a /etc/resolv.conf
+echo "nameserver 8.8.4.4" | pct exec $CTID -- tee -a /etc/resolv.conf
 ```
 
 ```shell
