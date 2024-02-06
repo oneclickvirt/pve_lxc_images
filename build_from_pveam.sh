@@ -121,10 +121,8 @@ for ((i=0; i<${#images[@]}; i++)); do
     pct set $CTID --nameserver 1.1.1.1
     pct set $CTID --searchdomain local
     sleep 3
-    pct exec $CTID -- echo "" >> /etc/resolv.conf 
-    pct exec $CTID -- echo "nameserver 8.8.8.8" >> /etc/resolv.conf
-    pct exec $CTID -- echo "" >> /etc/resolv.conf 
-    pct exec $CTID -- echo "nameserver 8.8.4.4" >> /etc/resolv.conf
+    echo "nameserver 8.8.8.8" | pct exec $CTID -- tee -a /etc/resolv.conf
+    echo "nameserver 8.8.4.4" | pct exec $CTID -- tee -a /etc/resolv.conf
     if echo "$image" | grep -qiE "centos|almalinux|rockylinux"; then
         pct exec $CTID -- yum install -y curl
         if [[ -z "${CN}" || "${CN}" != true ]]; then
