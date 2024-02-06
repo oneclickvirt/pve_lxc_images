@@ -193,18 +193,18 @@ for ((i=0; i<${#images[@]}; i++)); do
             pct exec $CTID -- curl -lk https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh -o ChangeMirrors.sh
             pct exec $CTID -- chmod 777 ChangeMirrors.sh
             pct exec $CTID -- ./ChangeMirrors.sh --use-official-source --web-protocol http --intranet false --close-firewall true --backup true --updata-software false --clean-cache false --ignore-backup-tips
-            if [[ $image == *"debian-10"* ]]; then
-                sleep 3
-                pct exec $CTID -- rm -rf ChangeMirrors.sh
-                pct exec $CTID -- wget https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh
-                pct exec $CTID -- chmod 777 ChangeMirrors.sh
-                pct exec $CTID -- ./ChangeMirrors.sh --use-official-source --web-protocol http --intranet false --close-firewall true --backup true --updata-software false --clean-cache false --ignore-backup-tips
-                pct exec $CTID -- sed -i '/debian-security/ s/^/#/' /etc/apt/sources.list
-                pct exec $CTID -- apt-get update
-                pct exec $CTID -- apt-get install debian-keyring debian-archive-keyring -y
-                pct exec $CTID -- apt-get update
-                pct exec $CTID -- apt-get install dos2unix curl sudo -y
-            fi
+            # if [[ $image == *"debian-10"* ]]; then
+            #     sleep 3
+            #     pct exec $CTID -- rm -rf ChangeMirrors.sh
+            #     pct exec $CTID -- wget https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh
+            #     pct exec $CTID -- chmod 777 ChangeMirrors.sh
+            #     pct exec $CTID -- ./ChangeMirrors.sh --use-official-source --web-protocol http --intranet false --close-firewall true --backup true --updata-software false --clean-cache false --ignore-backup-tips
+            #     pct exec $CTID -- sed -i '/debian-security/ s/^/#/' /etc/apt/sources.list
+            #     pct exec $CTID -- apt-get update
+            #     pct exec $CTID -- apt-get install debian-keyring debian-archive-keyring -y
+            #     pct exec $CTID -- apt-get update
+            #     pct exec $CTID -- apt-get install dos2unix curl sudo -y
+            # fi
         else
             pct exec $CTID -- apt-get install curl -y --fix-missing
             pct exec $CTID -- curl -lk https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh -o ChangeMirrors.sh
