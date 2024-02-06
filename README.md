@@ -78,3 +78,7 @@ mv /root/tp/${backup_file_name} /root/tp/${real_name}_amd64.tar.zst
 rm -rf /root/tp/vzdump*
 pct destroy 101
 ```
+
+## Thanks 
+
+http://download.proxmox.com/images/system/
