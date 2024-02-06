@@ -57,7 +57,7 @@ checkupdate() {
 }
 
 install_required_modules() {
-    modules=("sshpass" "openssh-server")
+    modules=("sshpass" "openssh-server" "curl")
     for module in "${modules[@]}"; do
         if command -v apt-get >/dev/null 2>&1; then
             if dpkg -s $module >/dev/null 2>&1; then
