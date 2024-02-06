@@ -4,7 +4,7 @@
 
 url="http://download.proxmox.com/images/system/"
 images=()
-fixed_images=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/oneclickvirt/pve_lxc_images/releases/tags/images" | grep -oP '"name": "\K[^"]+' | grep -v "images" |awk 'NR%2==1')
+fixed_images=($(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/oneclickvirt/pve_lxc_images/releases/tags/images" | grep -oP '"name": "\K[^"]+' | grep -v "images" | awk 'NR%2==1'))
 while IFS= read -r line; do
   fixed_image=false
   for fa in "${fixed_images[@]}"; do
@@ -14,11 +14,10 @@ while IFS= read -r line; do
         break
     fi
   done
-  if [ $fixed_image == true ]; then
-    continue
-  fi
-  if [[ ! $line =~ \.aplinfo && $line != '../' ]]; then
-    images+=("$line")
+  if [ "$fixed_image" == false ]; then
+    if [[ ! $line =~ \.aplinfo && $line != '../' ]]; then
+      images+=("$line")
+    fi
   fi
 done < <(curl -s "$url" | grep -oP '(?<=href=")[^"]+')
 length=${#images[@]}
