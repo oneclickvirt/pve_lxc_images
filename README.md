@@ -39,6 +39,8 @@ pct enter 101
 ./ChangeMirrors.sh --use-official-source --web-protocol http --intranet false --close-firewall true --backup true --updata-software false --clean-cache false --install-epel true --ignore-backup-tips
 ```
 
+https://help.mirrors.cernet.edu.cn/
+
 ```shell
 # https://raw.githubusercontent.com/oneclickvirt/pve_lxc_images/main/bash_ssh.sh
 ./bash_ssh.sh
