@@ -209,6 +209,10 @@ for ((i=0; i<${#images[@]}; i++)); do
         # rc-service sshd start
         # emerge --ask sys-kernel/gentoo-sources
         # systemctl enable sshd.service
+        # opensuse
+        # zypper install curl wget dos2unix sshpass openssh-server sudo vim --no-confirm
+        # systemctl enable sshd
+        # systemctl start sshd
     fi
     pct exec $CTID -- curl -lk ${cdn_success_url}https://raw.githubusercontent.com/oneclickvirt/pve_lxc_images/main/bash_ssh.sh -o bash_ssh.sh
     pct exec $CTID -- chmod 777 bash_ssh.sh
