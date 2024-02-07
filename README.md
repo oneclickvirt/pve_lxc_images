@@ -90,6 +90,7 @@ pct destroy 101
 ## upload
 
 ```
+# https://api.github.com/repos/oneclickvirt/pve_lxc_images/releases/tags/images
 release_id="139874716"
 token=""
 for file in *; do
