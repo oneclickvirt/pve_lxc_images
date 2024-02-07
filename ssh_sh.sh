@@ -62,6 +62,7 @@ elif [ "$(grep . /etc/issue 2>/dev/null | cut -d \\ -f1 | sed '/^[ ]*$/d')" =~ *
   rm -rf /etc/pacman.d/gnupg/
   pacman-key --init
   pacman-key --populate archlinux
+  pacman -Syyuu
   pacman -Sy --needed openssh
   pacman -Sy --needed bash
   pacman -Sy --needed chattr
