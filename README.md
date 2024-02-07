@@ -99,7 +99,8 @@ for file in *; do
              -H "Content-Type: application/zip" \
              --data-binary @"$file" \
              "https://uploads.github.com/repos/oneclickvirt/pve_lxc_images/releases/$release_id/assets?name=$(basename "$file")"
-         rm -rf $file
+        rm -rf $file
+        echo ""
     fi
 done
 ```
