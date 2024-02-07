@@ -55,6 +55,31 @@ elif [ "$(cat /etc/os-release | grep -E '^ID=' | cut -d '=' -f 2 | tr -d '"')" =
   sed -i '/^AuthorizedKeysFile/s/^/#/' /etc/ssh/sshd_config
   chattr +i /etc/ssh/sshd_config
   /etc/init.d/sshd restart
+elif [ "$(grep . /etc/issue 2>/dev/null | cut -d \\ -f1 | sed '/^[ ]*$/d')" =~ *"Arch"* ]; then
+  curl -slk https://raw.githubusercontent.com/SuperManito/LinuxMirrors/main/ChangeMirrors.sh -o ChangeMirrors.sh
+  chmod 777 ChangeMirrors.sh
+  ./ChangeMirrors.sh --use-official-source --web-protocol http --intranet false --close-firewall true --backup true --updata-software false --clean-cache false --ignore-backup-tips
+  rm -rf /etc/pacman.d/gnupg/
+  pacman-key --init
+  pacman-key --populate archlinux
+  pacman -Sy --needed openssh
+  pacman -Sy --needed bash
+  pacman -Sy --needed chattr
+  pacman -Sy --needed cronie
+  pacman -Sy --needed cron
+  systemctl enable sshd
+  systemctl start sshd
+  chattr -i /etc/ssh/sshd_config
+  sed -i "s/^#\?Port.*/Port 22/g" /etc/ssh/sshd_config
+  sed -i "s/^#\?PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config
+  sed -i "s/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g" /etc/ssh/sshd_config
+  sed -i 's/#ListenAddress 0.0.0.0/ListenAddress 0.0.0.0/' /etc/ssh/sshd_config
+  sed -i 's/#ListenAddress ::/ListenAddress ::/' /etc/ssh/sshd_config
+  sed -i 's/#AddressFamily any/AddressFamily any/' /etc/ssh/sshd_config
+  sed -i "s/^#\?PubkeyAuthentication.*/PubkeyAuthentication no/g" /etc/ssh/sshd_config
+  sed -i '/^AuthorizedKeysFile/s/^/#/' /etc/ssh/sshd_config
+  chattr +i /etc/ssh/sshd_config
+  systemctl restart sshd 
 fi
 /etc/init.d/cron enable || true
 /etc/init.d/cron start || true
