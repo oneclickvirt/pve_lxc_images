@@ -43,7 +43,15 @@ https://help.mirrors.cernet.edu.cn/
 
 ```shell
 # https://raw.githubusercontent.com/oneclickvirt/pve_lxc_images/main/bash_ssh.sh
+chmod 777 bash_ssh.sh
 ./bash_ssh.sh
+```
+
+
+```shell
+# https://raw.githubusercontent.com/oneclickvirt/pve_lxc_images/main/sh_ssh.sh
+chmod 777 sh_ssh.sh
+./sh_ssh.sh
 ```
 
 ```shell
