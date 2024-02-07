@@ -14,8 +14,7 @@ if [ "$(cat /etc/os-release | grep -E '^ID=' | cut -d '=' -f 2 | tr -d '"')" == 
   apk add --no-cache bash
   apk add --no-cache curl
   apk add --no-cache wget
-  apk add --no-cache cronie
-  apk add --no-cache cron
+  apk add --no-cache lsof
   cd /etc/ssh
   ssh-keygen -A
   chattr -i /etc/ssh/sshd_config
