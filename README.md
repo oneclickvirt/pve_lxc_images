@@ -87,6 +87,23 @@ rm -rf /root/tp/vzdump*
 pct destroy 101
 ```
 
+## upload
+
+```
+release_id="139874716"
+token=""
+for file in *; do
+    if [ -f "$file" ]; then
+        echo "Uploading $file..."
+        curl -s -H "Authorization: Bearer $token" \
+             -H "Content-Type: application/zip" \
+             --data-binary @"$file" \
+             "https://uploads.github.com/repos/oneclickvirt/pve_lxc_images/releases/$release_id/assets?name=$(basename "$file")"
+         rm -rf $file
+    fi
+done
+```
+
 ## Thanks 
 
 http://download.proxmox.com/images/system/
