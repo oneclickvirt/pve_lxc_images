@@ -31,7 +31,6 @@ if [ "$(cat /etc/os-release | grep -E '^ID=' | cut -d '=' -f 2 | tr -d '"')" == 
   sed -E -i 's/ssh_pwauth:[[:space:]]*false/ssh_pwauth:   true/g' /etc/cloud/cloud.cfg
   /usr/sbin/sshd
   rc-update add sshd default
-  echo root:"$1" | chpasswd root
   chattr +i /etc/ssh/sshd_config
 elif [ "$(cat /etc/os-release | grep -E '^ID=' | cut -d '=' -f 2 | tr -d '"')" == "openwrt" ]; then
   opkg update
@@ -56,7 +55,6 @@ elif [ "$(cat /etc/os-release | grep -E '^ID=' | cut -d '=' -f 2 | tr -d '"')" =
   sed -i "s/^#\?PubkeyAuthentication.*/PubkeyAuthentication no/g" /etc/ssh/sshd_config
   sed -i '/^AuthorizedKeysFile/s/^/#/' /etc/ssh/sshd_config
   chattr +i /etc/ssh/sshd_config
-  echo -e "$1\n$1" | passwd root
   /etc/init.d/sshd restart
 fi
 /etc/init.d/cron enable || true
