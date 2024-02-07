@@ -201,6 +201,14 @@ for ((i=0; i<${#images[@]}; i++)); do
             pct exec $CTID -- rm -rf ChangeMirrors.sh
             pct exec $CTID -- apt-get install dos2unix -y
         fi
+        # gentoo
+        # emerge --sync
+        # emerge --ask --changed-use net-misc/openssh
+        # /usr/sbin/sshd -t
+        # rc-update add sshd default
+        # rc-service sshd start
+        # emerge --ask sys-kernel/gentoo-sources
+        # systemctl enable sshd.service
     fi
     pct exec $CTID -- curl -lk ${cdn_success_url}https://raw.githubusercontent.com/oneclickvirt/pve_lxc_images/main/bash_ssh.sh -o bash_ssh.sh
     pct exec $CTID -- chmod 777 bash_ssh.sh
