@@ -8,7 +8,7 @@
 
 预安装：openssh、lsof、curl、wget、sudo、nano、sshpass
 
-已预开启SSH、预设支持IPV4和IPV6的22端口进行SSH链接
+已预开启SSH、预设支持IPV4和IPV6的22端口进行SSH链接，预设支持root登录但未设置默认密码
 
 ## manual 
 
