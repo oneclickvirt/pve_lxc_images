@@ -6,11 +6,15 @@
 
 完全支持：ubuntu、debian、centos、almalinux、rockylinux、alpine、opensuse
 
-预安装：openssh、lsof、curl、wget、sudo、nano、sshpass
+## 说明
+
+已预安装：openssh、lsof、curl、wget、sudo、nano、sshpass
+
+已替换可使用的源，均为可使用的源，且均已更新过源
 
 已预开启SSH、预设支持IPV4和IPV6的22端口进行SSH链接，预设支持root登录但未设置默认密码
 
-## manual 
+## 手动修补的部分命令
 
 ```shell
 image=""
@@ -87,7 +91,7 @@ rm -rf /root/tp/vzdump*
 pct destroy 101
 ```
 
-## upload
+## 上传到对应release
 
 ```
 # https://api.github.com/repos/oneclickvirt/pve_lxc_images/releases/tags/images
