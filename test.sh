@@ -1,6 +1,6 @@
 #!/bin/bash
 
-release_name="ubuntu"
+release_name="debian"
 manager="apt-get"
 response=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/oneclickvirt/pve_lxc_images/releases/tags/$release_name")
 echo "$response" | jq -r '.assets[].browser_download_url' | while read -r url; do
