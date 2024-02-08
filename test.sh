@@ -16,7 +16,7 @@ for image in "${images[@]}"; do
   pct start 102
   pct set 102 --hostname 101
   res0=$(pct set 102 --net0 name=eth0,ip=172.16.1.3/24,bridge=vmbr1,gw=172.16.1.1)
-  if [[ $res0 == *"error"* ]]; then
+  if [[ $res0 == *"error"* || $res0 == *"not"* ]]; then
       echo "set eth0 failed" >> log
   fi
   pct set 102 --nameserver 1.1.1.1
