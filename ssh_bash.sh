@@ -1,6 +1,6 @@
 #!/bin/bash
-# from
-# https://github.com/oneclickvirt/pve_lxc_images
+# by https://github.com/oneclickvirt/pve_lxc_images
+# 2024.02.08
 
 if [ -f "/etc/resolv.conf" ]; then
     cp /etc/resolv.conf /etc/resolv.conf.bak

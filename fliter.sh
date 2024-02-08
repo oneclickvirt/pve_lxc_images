@@ -1,6 +1,5 @@
 #!/bin/bash
-# from
-# https://github.com/oneclickvirt/pve_lxc_images
+# by https://github.com/oneclickvirt/pve_lxc_images
 
 url="http://download.proxmox.com/images/system/"
 images=()

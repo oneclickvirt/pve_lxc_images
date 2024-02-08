@@ -1,6 +1,6 @@
 #!/bin/sh
 # by https://github.com/oneclickvirt/pve_lxc_images
-# 2024.02.07
+# 2024.02.08
 
 if [ "$(id -u)" -ne 0 ]; then
   echo "This script must be executed with root privileges."

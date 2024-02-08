@@ -10,16 +10,6 @@
 
 已预开启SSH、预设支持IPV4和IPV6的22端口进行SSH链接
 
-## auto
-
-```shell
-curl -L https://raw.githubusercontent.com/oneclickvirt/pve_lxc_images/main/build_from_website.sh -o build_from_website.sh && chmod +x build_from_website.sh && ./build_from_website.sh
-```
-
-```shell
-curl -L https://raw.githubusercontent.com/oneclickvirt/pve_lxc_images/main/build_from_pveam.sh -o build_from_pveam.sh && chmod +x build_from_pveam.sh && ./build_from_pveam.sh
-```
-
 ## manual 
 
 ```shell
@@ -56,7 +46,6 @@ https://help.mirrors.cernet.edu.cn/
 chmod 777 ssh_bash.sh
 ./ssh_bash.sh
 ```
-
 
 ```shell
 # https://raw.githubusercontent.com/oneclickvirt/pve_lxc_images/main/ssh_sh.sh
