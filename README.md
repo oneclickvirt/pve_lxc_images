@@ -6,7 +6,7 @@
 
 完全支持：ubuntu、debian、centos、almalinux、rockylinux、alpine、opensuse
 
-预安装：openssh、lsof、curl、wget、sudo、nano
+预安装：openssh、lsof、curl、wget、sudo、nano、sshpass
 
 已预开启SSH、预设支持IPV4和IPV6的22端口进行SSH链接
 
@@ -24,7 +24,7 @@ curl -L https://raw.githubusercontent.com/oneclickvirt/pve_lxc_images/main/build
 
 ```shell
 image=""
-pct create 101 "$image" -cores 6 -cpuunits 1024 -memory 26480 -swap 0 -rootfs local:10 -onboot 1 -features nesting=1
+pct create 101 "$image" -cores 1 -cpuunits 1024 -memory 1024 -swap 0 -rootfs local:10 -onboot 1 -features nesting=1
 pct start 101
 pct set 101 --hostname 101
 pct set 101 --net0 name=eth0,ip=172.16.1.2/24,bridge=vmbr1,gw=172.16.1.1
