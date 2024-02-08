@@ -1,6 +1,8 @@
 #!/bin/bash
 # by https://github.com/oneclickvirt/pve_lxc_images
 
+# curl -L https://raw.githubusercontent.com/oneclickvirt/pve_lxc_images/main/test.sh -o test.sh && chmod +x test.sh && ./test.sh
+
 release_names=("ubuntu" "debian" "centos" "almalinux" "rockylinux" "fedora" "opensuse" "alpine")
 managers=("apt-get" "apt-get" "yum" "yum" "yum" "dnf" "zypper" "apk")
 for ((i=0; i<${#release_names[@]}; i++)); do
