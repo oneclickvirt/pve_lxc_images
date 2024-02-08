@@ -32,8 +32,6 @@ for image in "${images[@]}"; do
   res1=$(pct exec 102 -- lsof -i:22)
   if [[ $res1 == *"ssh"* ]]; then
       echo "ssh config correct"
-  else
-      echo "no ssh" >> log
   fi
   res2=$(pct exec 102 -- curl --version)
   if [[ $res2 == *"command not found"* ]]; then
