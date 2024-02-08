@@ -6,6 +6,10 @@
 
 完全支持：ubuntu、debian、centos、almalinux、rockylinux、alpine、opensuse
 
+预安装：openssh、lsof、curl、wget、sudo、nano
+
+已预开启SSH、预设支持IPV4和IPV6的22端口进行SSH链接
+
 ## auto
 
 ```shell
