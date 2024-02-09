@@ -31,8 +31,6 @@ for ((i=0; i<${#release_names[@]}; i++)); do
       res1=$(pct exec 102 -- lsof -i:22)
       if [[ $res1 == *"command not found"* ]]; then
           res1=$(pct exec 102 -- ${manager} install -y lsof)
-      else
-          echo "no lsof" >> log
       fi
       sleep 1
       res1=$(pct exec 102 -- lsof -i:22)
