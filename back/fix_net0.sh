@@ -9,6 +9,7 @@ for release_name in *; do
       pct set 101 --net0 name=spiritlhl,ip=172.16.1.2/24,bridge=vmbr1,gw=172.16.1.1
       pct set 101 --delete net0
       pct exec 101 -- ip addr flush dev eth0
+      pct exec 101 -- ip addr flush dev spiritlhl
       pct stop 101
       vzdump 101 --dumpdir /root/tp --compress zstd
       rm -rf /root/tp/*.log
