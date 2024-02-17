@@ -60,6 +60,7 @@ for ((i=0; i<${#release_names[@]}; i++)); do
       pct stop 102
       pct start 102
       sleep 6
+      echo "nameserver 8.8.8.8" | pct exec 102 -- tee -a /etc/resolv.conf
       res5=$(pct exec 102 -- curl -lk https://raw.githubusercontent.com/spiritLHLS/ecs/main/back/test)
       if [[ $res5 == *"success"* ]]; then
           echo "reboot success"
