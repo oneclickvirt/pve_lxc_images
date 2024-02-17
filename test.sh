@@ -57,7 +57,8 @@ for ((i=0; i<${#release_names[@]}; i++)); do
       else
           echo "no public network" >> log
       fi
-      pct exec 102 -- reboot
+      pct stop 102
+      pct start 102
       sleep 6
       res5=$(pct exec 102 -- curl -lk https://raw.githubusercontent.com/spiritLHLS/ecs/main/back/test)
       if [[ $res5 == *"success"* ]]; then
