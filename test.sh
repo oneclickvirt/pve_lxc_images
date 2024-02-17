@@ -5,17 +5,22 @@
 
 release_names=("ubuntu" "debian" "centos" "almalinux" "rockylinux" "fedora" "opensuse" "alpine")
 managers=("apt-get" "apt-get" "yum" "yum" "yum" "dnf" "zypper" "apk")
+response=$(curl -slk -m 6 "https://raw.githubusercontent.com/oneclickvirt/pve_lxc_images/main/fixed_images.txt")
+system_names=()
+if [ $? -eq 0 ] && [ -n "$response" ]; then
+    system_names+=($(echo "$response"))
+fi
 for ((i=0; i<${#release_names[@]}; i++)); do
     release_name="${release_names[i]}"
     manager="${managers[i]}"
-    response=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/oneclickvirt/pve_lxc_images/releases/tags/$release_name")
-    echo "$response" | jq -r '.assets[].browser_download_url' | while read -r url; do
-        filename=$(basename "$url")
-        echo "Downloading $filename"
-        curl -LO "$url"
+    temp_images=()
+    for sy in "${system_names[@]}"; do
+        if [[ $sy == "${release_name}"* ]]; then
+            curl -LO "https://github.com/oneclickvirt/pve_lxc_images/releases/download/${release_name}/${sy}"
+            temp_images+=("${sy}")
+        fi
     done
-    images=($(echo "$response" | jq -r '.assets[].name'))
-    for image in "${images[@]}"; do
+    for image in "${temp_images[@]}"; do
       echo "$image"
       echo "$image" >> log
       pct create 102 "$image" -cores 6 -cpuunits 1024 -memory 26480 -swap 0 -rootfs local:10 -onboot 1 -features nesting=1
