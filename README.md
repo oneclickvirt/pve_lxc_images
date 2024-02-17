@@ -77,8 +77,9 @@ pct exec 101 -- touch /etc/network/.pve-ignore.interfaces
 pct exec 101 -- touch /etc/.pve-ignore.resolv.conf
 pct exec 101 -- touch /etc/.pve-ignore.hosts
 pct exec 101 -- touch /etc/.pve-ignore.hostname
-pct exec 101 -- rm /etc/resolv.conf
-pct exec 101 -- rm /etc/hostname
+pct exec 101 -- rm -rf /etc/resolv.conf
+pct exec 101 -- rm -rf /etc/hostname
+pct exec 101 -- rm -rf /etc/network/interfaces
 pct exec 101 -- ip addr flush dev eth0
 pct set 101 --delete net0
 pct stop 101
