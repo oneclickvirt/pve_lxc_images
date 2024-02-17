@@ -20,8 +20,8 @@ for ((i=0; i<${#release_names[@]}; i++)); do
       echo "$image" >> log
       pct create 102 "$image" -cores 6 -cpuunits 1024 -memory 26480 -swap 0 -rootfs local:10 -onboot 1 -features nesting=1
       pct start 102
-      pct set 102 --hostname 101
-      res0=$(pct set 102 --net0 name=eth0,ip=172.16.1.3/24,bridge=vmbr1,gw=172.16.1.1)
+      pct set 102 --hostname 102
+      res0=$(pct set 102 --net0 name=eth0,ip=172.16.1.111/24,bridge=vmbr1,gw=172.16.1.1)
       if [[ $res0 == *"error"* || $res0 == *"failed: exit code"* ]]; then
           echo "set eth0 failed" >> log
       fi
