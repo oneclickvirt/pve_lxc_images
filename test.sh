@@ -57,15 +57,3 @@ for ((i=0; i<${#release_names[@]}; i++)); do
       echo "------------------------------------------" >> log
     done
 done
-
-# release_names=("ubuntu" "debian" "centos" "almalinux" "rockylinux" "fedora" "opensuse" "alpine")
-# managers=("apt-get" "apt-get" "yum" "yum" "yum" "dnf" "zypper" "apk")
-# for ((i=0; i<${#release_names[@]}; i++)); do
-#     release_name="${release_names[i]}"
-#     manager="${managers[i]}"
-#     response=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/oneclickvirt/pve_lxc_images/releases/tags/$release_name")
-#     echo "$response" | jq -r '.assets[].browser_download_url' | while read -r url; do
-#         filename=$(basename "$url")
-#         echo "$filename"
-#     done
-# done
