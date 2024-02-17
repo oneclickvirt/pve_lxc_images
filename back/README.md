@@ -33,6 +33,8 @@ for ((i=0; i<${#release_names[@]}; i++)); do
     echo "$response" | jq -r '.assets[].browser_download_url' | while read -r url; do
         filename=$(basename "$url")
         echo "$filename"
+        wget "$url"
+        chmod 777 "$filename"
     done
 done
 ```
