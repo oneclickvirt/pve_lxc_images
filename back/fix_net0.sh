@@ -14,7 +14,7 @@ for release_name in *; do
       vzdump 101 --dumpdir /root/tp --compress zstd
       rm -rf /root/tp/*.log
       backup_file_name=$(ls /root/tp | grep "vzdump")
-      real_name=$(echo "${image}" | sed 's/_amd64\..*//')
+      real_name=$(echo "${release_name}" | sed 's/_amd64\..*//')
       mv /root/tp/${backup_file_name} /root/tp/${real_name}_amd64.tar.zst
       rm -rf /root/tp/vzdump*
       pct destroy 101
