@@ -25,6 +25,7 @@ done
 #       echo "$image" >> log
 #       pct create 102 "$image" -cores 6 -cpuunits 1024 -memory 26480 -swap 0 -rootfs local:10 -onboot 1 -features nesting=1
 #       pct start 102
+#       sleep 1
 #       pct set 102 --hostname 102
 #       res0=$(pct set 102 --net0 name=eth0,ip=172.16.1.111/24,bridge=vmbr1,gw=172.16.1.1)
 #       if [[ $res0 == *"error"* || $res0 == *"failed: exit code"* ]]; then
@@ -32,7 +33,7 @@ done
 #       fi
 #       pct set 102 --nameserver 1.1.1.1
 #       pct set 102 --searchdomain local
-#       sleep 5
+#       sleep 6
 #       res1=$(pct exec 102 -- lsof -i:22)
 #       if [[ $res1 == *"command not found"* ]]; then
 #           res1=$(pct exec 102 -- ${manager} install -y lsof)
@@ -58,7 +59,8 @@ done
 #           echo "no public network" >> log
 #       fi
 #       pct exec 102 -- reboot
-#       sleep 6
+#       sleep 12
+#       echo "nameserver 8.8.8.8" | pct exec 102 -- tee -a /etc/resolv.conf
 #       res5=$(pct exec 102 -- curl -lk https://raw.githubusercontent.com/spiritLHLS/ecs/main/back/test)
 #       if [[ $res5 == *"success"* ]]; then
 #           echo "reboot success"
