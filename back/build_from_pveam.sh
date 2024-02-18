@@ -176,8 +176,7 @@ for ((i=0; i<${#images[@]}; i++)); do
         pct exec $CTID -- apt-get autoclean
         pct exec $CTID -- apt-get autoremove
     fi
-    # 禁止PVE自动修改网络接口设置
-    # pct exec $CTID -- touch /etc/network/.pve-ignore.interfaces
+    pct exec $CTID -- rm -rf /etc/network/.pve-ignore.interfaces
     # 禁止PVE自动修改DNS设置
     pct exec $CTID -- touch /etc/.pve-ignore.resolv.conf
     # 禁止PVE自动修改主机名设置
