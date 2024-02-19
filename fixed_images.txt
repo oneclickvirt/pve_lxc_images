@@ -75,3 +75,4 @@ alpine-3.6-default_20180913_amd64.tar.zst
 alpine-3.7-default_20180913_amd64.tar.zst
 alpine-3.8-default_20180913_amd64.tar.zst
 alpine-3.9-default_20190224_amd64.tar.zst
+gentoo-current-openrc_20231009_amd64.tar.zst 
