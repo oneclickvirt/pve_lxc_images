@@ -1,8 +1,8 @@
 # pve_lxc_images
 
-不支持：devuan、gentoo、archlinux
+不支持：devuan
 
-部分支持：fedora
+部分支持：fedora、gentoo、archlinux
 
 完全支持：ubuntu、debian、centos、almalinux、rockylinux、alpine、opensuse
 
