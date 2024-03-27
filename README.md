@@ -73,9 +73,6 @@ pct exec 101 -- apt-get autoremove
 ```
 
 ```shell
-pct exec 101 -- touch /etc/.pve-ignore.resolv.conf
-pct exec 101 -- touch /etc/.pve-ignore.hosts
-pct exec 101 -- touch /etc/.pve-ignore.hostname
 pct exec 101 -- rm -rf /etc/resolv.conf
 pct exec 101 -- rm -rf /etc/hostname
 pct exec 101 -- rm -rf /etc/network/.pve-ignore.interfaces
