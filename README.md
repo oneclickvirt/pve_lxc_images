@@ -1,5 +1,7 @@
 # pve_lxc_images
 
+[![Downloads](https://ghdownload.spiritlhl.net/oneclickvirt/pve_lxc_images?color=00c62d)](https://github.com/oneclickvirt/pve_lxc_images/releases)
+
 不支持：devuan
 
 部分支持：fedora、gentoo、archlinux
