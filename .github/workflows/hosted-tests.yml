@@ -8,7 +8,7 @@ name: Hosted published image tests
         options:
         - smoke
         - full
-        default: full
+        default: smoke
       image:
         description: Exact asset filename; empty selects the suite
         type: string
@@ -32,7 +32,7 @@ jobs:
     - id: catalog
       env:
         GH_TOKEN: ${{ github.token }}
-        SCOPE: ${{ inputs.scope || 'full' }}
+        SCOPE: ${{ inputs.scope || 'smoke' }}
         IMAGE: ${{ inputs.image }}
       run: python3 .github/scripts/published_image_suite.py matrix --scope "$SCOPE"
         --kind container

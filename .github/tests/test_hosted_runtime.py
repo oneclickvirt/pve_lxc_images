@@ -1,4 +1,6 @@
 import importlib.util
+from contextlib import redirect_stderr
+import io
 import json
 from pathlib import Path
 import socket
@@ -6,11 +8,27 @@ import tarfile
 import tempfile
 import threading
 import unittest
+import sys
 from unittest import mock
 import subprocess
+from types import SimpleNamespace
 
 spec=importlib.util.spec_from_file_location('hosted_runtime',Path(__file__).resolve().parents[1]/'scripts/hosted_image_test.py')
 runtime=importlib.util.module_from_spec(spec);spec.loader.exec_module(runtime)
+script_dir=Path(__file__).resolve().parents[1]/'scripts'
+sys.path.insert(0,str(script_dir))
+import refresh_pve_template
+
+
+class CredentialIsolationTests(unittest.TestCase):
+    def test_child_commands_do_not_inherit_github_tokens(self):
+        with mock.patch.dict(runtime.os.environ, {'GH_TOKEN':'secret-a','GITHUB_TOKEN':'secret-b'}), \
+             mock.patch.object(runtime.subprocess,'run') as execute:
+            runtime.run(['fixture'],env={'GH_TOKEN':'override','PRESERVED':'yes'})
+        environment=execute.call_args.kwargs['env']
+        self.assertNotIn('GH_TOKEN',environment)
+        self.assertNotIn('GITHUB_TOKEN',environment)
+        self.assertEqual(environment['PRESERVED'],'yes')
 
 
 class GuestAgentTests(unittest.TestCase):
@@ -86,5 +104,73 @@ class SSHTransportTests(unittest.TestCase):
         with mock.patch.object(runtime, 'run', side_effect=subprocess.CalledProcessError(1, ['ssh'], stderr='network failed')):
             with self.assertRaises(subprocess.CalledProcessError):
                 runtime.ssh_command(22022, Path('/tmp/key'), runtime.CHECK)
+
+
+class NativeStartupDiagnosticsTests(unittest.TestCase):
+    def test_start_failure_prints_bounded_incus_instance_log(self):
+        failure=subprocess.CalledProcessError(1,['sudo','incus','start','test-image'],stderr='forkstart failed')
+        diagnostic=subprocess.CompletedProcess(['sudo','incus','info'],0,'x'*7000,'')
+        output=io.StringIO()
+        with mock.patch.object(runtime,'run',side_effect=[None,None,None,failure]), \
+             mock.patch.object(runtime.subprocess,'run',return_value=diagnostic) as execute, \
+             redirect_stderr(output):
+            with self.assertRaises(subprocess.CalledProcessError):
+                runtime.native_test(Path('/tmp'),SimpleNamespace(name='image.tar.xz'),Path('/tmp/rootfs.tar.xz'))
+        self.assertIn('x'*100,output.getvalue())
+        self.assertLessEqual(len(output.getvalue()),6100)
+        diagnostic_call=execute.call_args_list[0]
+        self.assertEqual(diagnostic_call.args[0],['sudo','incus','info',mock.ANY,'--show-log'])
+        self.assertEqual(diagnostic_call.kwargs['timeout'],30)
+
+    def test_diagnostic_failure_does_not_replace_start_failure(self):
+        failure=subprocess.CalledProcessError(1,['sudo','incus','start','test-image'])
+        output=io.StringIO()
+        with mock.patch.object(runtime,'run',side_effect=[None,None,None,failure]), \
+             mock.patch.object(runtime.subprocess,'run',side_effect=[
+                 subprocess.TimeoutExpired('incus info',30),
+                 subprocess.TimeoutExpired('incus delete',60),
+                 OSError('incus image delete unavailable'),
+             ]), \
+             redirect_stderr(output):
+            with self.assertRaises(subprocess.CalledProcessError) as raised:
+                runtime.native_test(Path('/tmp'),SimpleNamespace(name='image.tar.xz'),Path('/tmp/rootfs.tar.xz'))
+        self.assertIs(raised.exception,failure)
+        self.assertIn('diagnostics unavailable: TimeoutExpired',output.getvalue())
+
+    def test_image_validation_does_not_inherit_publisher_token(self):
+        with mock.patch.dict(runtime.os.environ,{'GH_TOKEN':'test-secret'}), \
+             mock.patch.object(refresh_pve_template.subprocess,'run') as execute:
+            refresh_pve_template.validate_image(Path('image.tar.xz'))
+        self.assertNotIn('GH_TOKEN',execute.call_args.kwargs['env'])
+
+
+class MaintainedTemplateRefreshTests(unittest.TestCase):
+    def test_only_latest_asset_for_each_catalog_release_is_selected(self):
+        specs=[{'release':'bookworm','version':'12'},{'release':'trixie','version':'13'}]
+        candidates=[
+            {'name':'debian_12_bookworm_amd64_default.tar.xz','updated_at':'2024-01-01T00:00:00Z'},
+            {'name':'debian_12_bookworm_x86_64_default.tar.xz','updated_at':'2025-01-01T00:00:00Z'},
+            {'name':'debian_13_trixie_x86_64_default.tar.xz','updated_at':'2025-02-01T00:00:00Z'},
+        ]
+        selected=refresh_pve_template.select_latest(candidates,specs,'debian','default')
+        self.assertEqual([row['updated_at'] for row in selected],['2025-01-01T00:00:00Z','2025-02-01T00:00:00Z'])
+
+    def test_failed_candidate_does_not_block_later_release(self):
+        candidates=[{'name':'broken.tar.xz'},{'name':'valid.tar.xz'}]
+        def process(asset):
+            if asset['name']=='broken.tar.xz':raise RuntimeError('fixture build failure')
+            return 'valid.tar.zst'
+        with mock.patch.object(refresh_pve_template,'print') as output:
+            self.assertEqual(refresh_pve_template.process_candidates(candidates,process),['valid.tar.zst'])
+        output.assert_called_once()
+
+class GuestDHCPRecoveryTests(unittest.TestCase):
+    def test_readiness_probe_attempts_available_guest_dhcp_clients(self):
+        source=runtime.CHECK
+        self.assertIn('network_recovery()',source)
+        self.assertIn('dhclient -1 "$interface"',source)
+        self.assertIn('udhcpc -n -q',source)
+        self.assertIn('dhcpcd -n',source)
+        self.assertLess(source.index('network_recovery\nhttps_check'),source.index('cat /proc/sys/kernel/random/boot_id'))
 
 if __name__=='__main__':unittest.main()
