@@ -1,0 +1,53 @@
+name: Refresh maintained PVE LXC templates
+'on':
+  workflow_dispatch:
+    inputs:
+      distro:
+        description: Maintained public source distribution or all
+        type: string
+        default: all
+  schedule:
+  - cron: 17 2 * * 1
+permissions:
+  contents: write
+concurrency:
+  group: refresh-maintained-pve-${{ inputs.distro || 'all' }}
+  cancel-in-progress: false
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+jobs:
+  catalog:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      matrix: ${{ steps.catalog.outputs.matrix }}
+    steps:
+    - id: catalog
+      env:
+        DISTRO: ${{ inputs.distro || 'all' }}
+      run: "python3 - <<'PY'\nimport json,os\nnames='almalinux alpine archlinux centos\
+        \ debian fedora gentoo kali openeuler opensuse openwrt oracle rockylinux ubuntu'.split()\n\
+        choice=os.environ['DISTRO']\nif choice!='all':\n    if choice not in names:raise\
+        \ ValueError('unsupported distribution')\n    names=[choice]\nwith open(os.environ['GITHUB_OUTPUT'],'a')\
+        \ as stream:print('matrix='+json.dumps({'distro':names}),file=stream)\nPY"
+  refresh:
+    needs: catalog
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix: ${{ fromJSON(needs.catalog.outputs.matrix) }}
+    steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      with:
+        persist-credentials: false
+    - name: Prepare disposable hosted consumer
+      run: 'bash .github/scripts/prepare_hosted_runtime.sh incus
+
+        sudo apt-get install -y --no-install-recommends zstd'
+    - name: Verify, recompress and publish maintained PVE template
+      env:
+        GH_TOKEN: ${{ github.token }}
+        DISTRO: ${{ matrix.distro }}
+      run: python3 .github/scripts/refresh_pve_template.py "$DISTRO"

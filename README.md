@@ -8,6 +8,12 @@
 
 完全支持：ubuntu、debian、centos、almalinux、rockylinux、alpine、opensuse
 
+## 持续维护的模板
+
+`maintained` 发布使用组织 `lxc_amd64_images` 的公开镜像作为来源，在 GitHub 托管 runner 上验证启动、SSH、HTTPS/DNS 和重启，再无损重压缩成 Proxmox 支持的 `.tar.zst`，重新验证后发布。每周自动同步，支持手动选择发行版。历史发布文件继续保留。
+
+已确认不能提供正常 SSH 的历史基础模板记录在 `.github/known-image-issues.json`。常规批量验收隔离这些确切版本；手动指定文件名仍可复查，资产被替换后会自动重新纳入验收。
+
 ## 说明
 
 已预安装：openssh、lsof、curl、wget、sudo、nano、sshpass

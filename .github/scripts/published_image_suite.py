@@ -30,6 +30,15 @@ def published(publisher):
 
 def matrix(assets,repo,scope,kind):
     rows=[]
+    issue_file=Path('.github/known-image-issues.json')
+    issues=json.loads(issue_file.read_text())['issues'] if issue_file.is_file() else []
+    selected=[]
+    for asset in assets:
+        issue=next((i for i in issues if i['image']==asset['name'] and i['asset_id']==asset['id'] and i['updated_at']==asset['updated_at']),None)
+        if issue and not os.environ.get('IMAGE'):
+            print('Archived incompatible image excluded:',asset['name'],issue['reason'])
+        else:selected.append(asset)
+    assets=selected
     if scope not in ('smoke','full'):raise ValueError('invalid suite scope')
     for asset in sorted(assets,key=lambda a:a['name']):
         name=asset['name'];vm=name.endswith('.qcow2') or name.endswith('_kvm.zip')

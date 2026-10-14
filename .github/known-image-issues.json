@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "issues": [
+    {
+      "image": "archlinux-base_20211202-1_amd64.tar.zst",
+      "asset_id": 150272067,
+      "updated_at": "2024-02-07T08:30:25Z",
+      "reason": "Historical rootfs does not provide a running SSH service on the hosted consumer; use a maintained replacement.",
+      "evidence": "https://github.com/oneclickvirt/pve_lxc_images/actions/runs/38512390959"
+    },
+    {
+      "image": "archlinux-base_20221111-1_amd64.tar.zst",
+      "asset_id": 150272078,
+      "updated_at": "2024-02-07T08:30:32Z",
+      "reason": "Historical rootfs does not provide a running SSH service on the hosted consumer; use a maintained replacement.",
+      "evidence": "https://github.com/oneclickvirt/pve_lxc_images/actions/runs/38512390959"
+    },
+    {
+      "image": "centos-7-default_20170504_amd64.tar.zst",
+      "asset_id": 152178874,
+      "updated_at": "2024-02-18T03:48:36Z",
+      "reason": "Historical rootfs does not provide a running SSH service on the hosted consumer; use a maintained replacement.",
+      "evidence": "https://github.com/oneclickvirt/pve_lxc_images/actions/runs/38512390959"
+    },
+    {
+      "image": "centos-7-default_20171212_amd64.tar.zst",
+      "asset_id": 152178877,
+      "updated_at": "2024-02-18T03:48:43Z",
+      "reason": "Historical rootfs does not provide a running SSH service on the hosted consumer; use a maintained replacement.",
+      "evidence": "https://github.com/oneclickvirt/pve_lxc_images/actions/runs/38512390959"
+    },
+    {
+      "image": "centos-7-default_20190926_amd64.tar.zst",
+      "asset_id": 152178879,
+      "updated_at": "2024-02-18T03:48:49Z",
+      "reason": "Historical rootfs does not provide a running SSH service on the hosted consumer; use a maintained replacement.",
+      "evidence": "https://github.com/oneclickvirt/pve_lxc_images/actions/runs/38512390959"
+    }
+  ]
+}
