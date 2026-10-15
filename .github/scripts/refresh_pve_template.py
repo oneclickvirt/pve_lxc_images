@@ -43,6 +43,13 @@ def process_candidates(candidates, process):
     return outputs
 
 
+def publish_outputs(outputs):
+    if not outputs:
+        raise RuntimeError('No maintained PVE templates passed hosted validation; previous release retained')
+    subprocess.run(['python3','.github/scripts/release_assets.py','maintained',*outputs],check=True,timeout=1800)
+    print('Published a maintained PVE template; historical assets retained:',len(outputs))
+
+
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('distro');args=parser.parse_args()
     if args.distro not in ['almalinux','alpine','archlinux','centos','debian','fedora','gentoo','kali','openeuler','opensuse','openwrt','oracle','rockylinux','ubuntu']:
@@ -93,10 +100,7 @@ def main():
             if output is not None and not keep_output:output.unlink(missing_ok=True)
 
     outputs=process_candidates(sorted(candidates,key=lambda a:a['name']),process)
-    if not outputs:
-        print('No maintained PVE templates passed hosted validation; previous release retained.',file=sys.stderr)
-        return
-    subprocess.run(['python3','.github/scripts/release_assets.py','maintained',*outputs],check=True,timeout=1800)
-    print('Published a maintained PVE template; historical assets retained:',len(outputs))
+    print(f'PVE template refresh: {len(outputs)} accepted, {len(candidates)-len(outputs)} deferred')
+    publish_outputs(outputs)
 
 if __name__=='__main__':main()
