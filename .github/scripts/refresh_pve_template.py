@@ -3,6 +3,7 @@
 import argparse,base64,datetime,json,os,re,subprocess,sys
 from pathlib import Path
 from release_assets import Publisher
+from verify_template_identity import verify_template_identity
 
 
 def validate_image(filename):
@@ -76,6 +77,7 @@ def main():
             if temporary.stat().st_size!=asset['size']:raise ValueError('source image size mismatch')
             if asset.get('digest') and asset['digest']!='sha256:'+source.digest(temporary):raise ValueError('source image checksum mismatch')
             temporary.rename(filename)
+            verify_template_identity(filename)
             validate_image(filename)
             stamp=datetime.datetime.fromisoformat(asset['updated_at'].replace('Z','+00:00')).strftime('%Y%m%d')
             stem=filename.name[:-7]
@@ -91,6 +93,7 @@ def main():
                     if compress.poll() is None:compress.kill();compress.wait()
                     if unpack.poll() is None:unpack.kill();unpack.wait()
             subprocess.run(['zstd','--test',str(output)],check=True,timeout=300)
+            verify_template_identity(output)
             validate_image(output)
             keep_output=True
             return output
