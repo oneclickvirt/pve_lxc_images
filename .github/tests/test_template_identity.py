@@ -13,6 +13,28 @@ from verify_template_identity import verify_template_identity
 
 
 class TemplateIdentityTests(unittest.TestCase):
+    def test_mislabelled_executable_is_rejected_before_publication(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            path=Path(temporary)/'openeuler_arm64_default.tar.xz'
+            for architecture,machine in [('amd64',62),('arm64',183)]:
+                header=bytearray(64)
+                header[:6]=b'\x7fELF\x02\x01'
+                header[18:20]=machine.to_bytes(2,'little')
+                with tarfile.open(path,'w:xz') as archive:
+                    member=tarfile.TarInfo('./usr/bin/bash')
+                    member.size=len(header)
+                    archive.addfile(member,io.BytesIO(header))
+                verify_template_identity(path,architecture=architecture)
+                other='arm64' if architecture=='amd64' else 'amd64'
+                with self.assertRaisesRegex(ValueError,'architecture does not match'):
+                    verify_template_identity(path,architecture=other)
+
+    def test_metadata_without_a_native_executable_cannot_prove_arm64(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            path=self.write_archive(Path(temporary),['etc/os-release'],'xz')
+            with self.assertRaisesRegex(ValueError,'no executable'):
+                verify_template_identity(path,architecture='arm64')
+
     def write_archive(self, folder, names, extension):
         tar = folder / 'rootfs.tar'
         with tarfile.open(tar, 'w') as archive:

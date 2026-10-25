@@ -6,12 +6,17 @@ name: Refresh maintained PVE LXC templates
         description: Maintained public source distribution or all
         type: string
         default: all
+      architecture:
+        description: ARM64 refresh currently selects openEuler explicitly
+        type: choice
+        options: [amd64, arm64]
+        default: amd64
   schedule:
   - cron: 17 2 * * 1
 permissions:
   contents: write
 concurrency:
-  group: refresh-maintained-pve-${{ inputs.distro || 'all' }}
+  group: refresh-maintained-pve-${{ inputs.distro || 'all' }}-${{ inputs.architecture || 'amd64' }}
   cancel-in-progress: false
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
@@ -25,14 +30,24 @@ jobs:
     - id: catalog
       env:
         DISTRO: ${{ inputs.distro || 'all' }}
-      run: "python3 - <<'PY'\nimport json,os\nnames='almalinux alpine archlinux centos\
-        \ debian fedora gentoo kali openeuler opensuse openwrt oracle rockylinux ubuntu'.split()\n\
-        choice=os.environ['DISTRO']\nif choice!='all':\n    if choice not in names:raise\
-        \ ValueError('unsupported distribution')\n    names=[choice]\nwith open(os.environ['GITHUB_OUTPUT'],'a')\
-        \ as stream:print('matrix='+json.dumps({'distro':names}),file=stream)\nPY"
+        ARCHITECTURE: ${{ inputs.architecture || 'amd64' }}
+      run: |
+        python3 - <<'PY'
+        import json,os
+        names='almalinux alpine archlinux centos debian fedora gentoo kali openeuler opensuse openwrt oracle rockylinux ubuntu'.split()
+        choice=os.environ['DISTRO'];arch=os.environ['ARCHITECTURE']
+        if arch not in ['amd64','arm64']:raise ValueError('unsupported architecture')
+        if arch=='arm64' and choice!='openeuler':raise ValueError('Select openeuler for the ARM64 refresh')
+        if choice!='all':
+            if choice not in names:raise ValueError('unsupported distribution')
+            names=[choice]
+        runner='ubuntu-24.04-arm' if arch=='arm64' else 'ubuntu-24.04'
+        matrix={'include':[dict(distro=name,arch=arch,runner=runner) for name in names]}
+        with open(os.environ['GITHUB_OUTPUT'],'a') as stream:print('matrix='+json.dumps(matrix),file=stream)
+        PY
   refresh:
     needs: catalog
-    runs-on: ubuntu-24.04
+    runs-on: ${{ matrix.runner }}
     timeout-minutes: 75
     strategy:
       fail-fast: false
@@ -50,4 +65,5 @@ jobs:
       env:
         GH_TOKEN: ${{ github.token }}
         DISTRO: ${{ matrix.distro }}
-      run: python3 .github/scripts/refresh_pve_template.py "$DISTRO"
+        ARCHITECTURE: ${{ matrix.arch }}
+      run: python3 .github/scripts/refresh_pve_template.py "$DISTRO" --arch "$ARCHITECTURE"
