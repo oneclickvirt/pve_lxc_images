@@ -4,8 +4,8 @@
   "mcp": true,
   "files": {
     "agent/profile.json": "d5a70ffe32d5c42b5871412227d58d84c835f944dacc20a67c5292dc1c62aed0",
-    "skills/oneclickvirt-pve-lxc-images/SKILL.md": "f07cbb28c8f2a090e9045fce58f4eed518ac993b554f97ec00efd1669b0da23d",
-    "skills/oneclickvirt-pve-lxc-images/SKILL_ZH.md": "008de4f00f7aebe1c29ac547ece5a7cae85a75eb8eaef89f527310b4f93ab806",
-    "agent/server.py": "c54981973f8d98e6eada6e0442f3d7e5c9296947706c2c5d33b80b7f9a1c9b5b"
+    "skills/oneclickvirt-pve-lxc-images/SKILL.md": "949a76c5818f93d93b1b11b0ad5ab048109e792d4c6905ec6eda777c46fc5bca",
+    "skills/oneclickvirt-pve-lxc-images/SKILL_ZH.md": "386f1bcf51ecd95e920f2f9ff32d917ef40759a500a3db3d4044cf1a14f50326",
+    "agent/server.py": "f4fe673f355a9b8ab06b4f8c1f90251e0ad79e1d9324ee4d62eff5e12ac45b74"
   }
 }
