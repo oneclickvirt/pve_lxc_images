@@ -1,0 +1,11 @@
+{
+  "repository": "oneclickvirt/pve_lxc_images",
+  "skill_name": "oneclickvirt-pve-lxc-images",
+  "mcp": true,
+  "files": {
+    "agent/profile.json": "d5a70ffe32d5c42b5871412227d58d84c835f944dacc20a67c5292dc1c62aed0",
+    "skills/oneclickvirt-pve-lxc-images/SKILL.md": "f07cbb28c8f2a090e9045fce58f4eed518ac993b554f97ec00efd1669b0da23d",
+    "skills/oneclickvirt-pve-lxc-images/SKILL_ZH.md": "008de4f00f7aebe1c29ac547ece5a7cae85a75eb8eaef89f527310b4f93ab806",
+    "agent/server.py": "d01416e6194095d90bf0d49ea29f7122969f0b74cf4d74ed0b1ce78753423a7d"
+  }
+}
